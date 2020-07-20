@@ -6,6 +6,11 @@ public class SpawnManager : MonoBehaviour
 {
     //스폰 포인트를 담아둔다.
     private Transform[] spawnPoint;
+    //랜덤으로 보내준다.
+    public Transform SpawnPoint
+    {
+        get { return spawnPoint[Random.Range(0, spawnPoint.Length)]; }
+    }
 
     //3마리씩 움직이려면 Group에 담아둬야 한다.
     //담아둘 그룹 프리팹
@@ -47,6 +52,8 @@ public class SpawnManager : MonoBehaviour
             {
                 //AnimalManager에게서 mouse를 받는다.
                 GameObject mouse = AnimalManager.Instans.MousePool;
+                //활성화
+                mouse.SetActive(true);
 
                 int xOffset = 0;
                 if (j == 1)
@@ -57,11 +64,16 @@ public class SpawnManager : MonoBehaviour
                 //중앙에 0번 양 옆에 1, 2애니멀이 세워지도록 배치
                 Vector2 pos = new Vector2(groupOb.transform.position.x + xOffset, groupOb.transform.position.y);
                 mouse.transform.position = pos;
+                //새로 만들어질 때 타겟을 본인으로 해준다.
+                //mouse.GetComponent<AnimalFSM>().TargetPoint = mouse.transform;
                 //그룹으로 묶어준다.
                 mouse.transform.parent = groupOb.transform;
 
+                //그리고 부모의 스크립트 컴포넌트 및 새로운 타겟 찾기
+                mouse.GetComponent<AnimalFSM>().FirstTagetCheck();
+
                 //0번째 애니멀은 잡을 수 있다.
-                if(j == 0)
+                if (j == 0)
                 {
                     mouse.GetComponent<AnimalUI>().enabled = true;
                 }
@@ -70,8 +82,8 @@ public class SpawnManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //void Update()
+    //{
+    //    
+    //}
 }

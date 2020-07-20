@@ -125,23 +125,18 @@ public class PlayerFSM : MonoBehaviour
 
     private void Run()
     {
-        //플레이어 발
-        Vector2 bottom = transform.position;
-        bottom.y -= 1;
+        //상하좌우
+        float H = Input.GetAxis("Horizontal");
+        float V = Input.GetAxis("Vertical");
 
-        //왼쪽으로 갈 때
-        if(Input.GetAxis("Horizontal") < 0)
-        {
-            //왼쪽으로 0.5떨어진 곳
-            Vector2 temp = bottom;
-            temp.x -= 0.5f;
-            //그곳에 정보를 Gound가 없다면
-            if (Physics2D.OverlapCircle(temp, 0.1f) != Ground)
-                return;
-        }
+        //물을 만나면 그 방향 0으로
+        if (!HorizontalCheck())
+            H = 0;
+        if (!VerticalCheck())
+            V = 0;
 
         //현재 위치에서 조이스틱이 움직인 만큼 이동해 준다.(캐스팅)
-        Vector2 move = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * Time.deltaTime;
+        Vector2 move = new Vector2(H, V) * Time.deltaTime;
 
         Vector2 casting = transform.position;
 
@@ -161,6 +156,100 @@ public class PlayerFSM : MonoBehaviour
             }
         }
 
+    }
+
+    private bool VerticalCheck()
+    {
+        //플레이어 발
+        Vector2 bottom = transform.position;
+        bottom.y -= 1;
+
+
+        //왼쪽으로 갈 때
+        if (Input.GetAxis("Vertical") < 0)
+        {
+            //아래쪽으로 0.5떨어진 곳
+            Vector2 temp = bottom;
+            temp.y -= 0.5f;
+
+
+            for (int i = 0; i < Physics.OverlapSphere(temp, 0.1f).Length; i++)
+            {
+                if (Physics.OverlapSphere(temp, 0.1f)[i].name.Contains("Ground"))
+                    break;
+
+                if (i == Physics.OverlapSphere(temp, 0.1f).Length - 1)
+                    return false;
+            }
+
+        }
+        //오른쪽으로 갈 때
+        else if (Input.GetAxis("Vertical") > 0)
+        {
+            //위쪽으로 0.5떨어진 곳
+            Vector2 temp = bottom;
+            temp.y += 0.5f;
+
+
+            for (int i = 0; i < Physics.OverlapSphere(temp, 0.1f).Length; i++)
+            {
+                if (Physics.OverlapSphere(temp, 0.1f)[i].name.Contains("Ground"))
+                    break;
+
+                if (i == Physics.OverlapSphere(temp, 0.1f).Length - 1)
+                    return false;
+            }
+
+        }
+
+        return true;
+    }
+
+    private bool HorizontalCheck()
+    {
+        //플레이어 발
+        Vector2 bottom = transform.position;
+        bottom.y -= 1;
+        
+
+        //왼쪽으로 갈 때
+        if (Input.GetAxis("Horizontal") < 0)
+        {
+            //왼쪽으로 0.5떨어진 곳
+            Vector2 temp = bottom;
+            temp.x -= 0.5f;
+
+            
+            for (int i = 0; i < Physics.OverlapSphere(temp, 0.1f).Length; i++)
+            {
+                if (Physics.OverlapSphere(temp, 0.1f)[i].name.Contains("Ground"))
+                    break;
+
+                if (i == Physics.OverlapSphere(temp, 0.1f).Length - 1)
+                    return false;
+            }
+                
+        }
+        //오른쪽으로 갈 때
+        else if(Input.GetAxis("Horizontal") > 0)
+        {
+            //오른쪽으로 0.5떨어진 곳
+            Vector2 temp = bottom;
+            temp.x += 0.5f;
+
+
+            for (int i = 0; i < Physics.OverlapSphere(temp, 0.1f).Length; i++)
+            {
+                if (Physics.OverlapSphere(temp, 0.1f)[i].name.Contains("Ground"))
+                    break;
+
+                if (i == Physics.OverlapSphere(temp, 0.1f).Length - 1)
+                    return false;
+            }
+
+        }
+
+        return true;
     }
 
     private void Attack()
