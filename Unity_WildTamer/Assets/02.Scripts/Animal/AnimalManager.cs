@@ -22,7 +22,7 @@ public class AnimalManager : MonoBehaviour
     }
 
     //처음에 만들 animal개수
-    private int maxAnimal = 10;
+    public int maxAnimal = 10;
     //동물을 담을 빈 오브젝트
     private Transform[] poolAnimal;
 
@@ -30,6 +30,29 @@ public class AnimalManager : MonoBehaviour
     public GameObject mouseFactory;
     //쥐 담을 풀
     private Queue<GameObject> mousePool;
+    public GameObject MousePool
+    {
+        get
+        {
+            //mousePool을 내보내기
+            if(mousePool.Count != 0)
+            {
+                return mousePool.Dequeue();
+            }
+            else
+            {
+                GameObject mouse = Instantiate(mouseFactory);
+
+                return mouse;
+            }
+        }
+        //다시 돌려받기
+        set
+        {
+            mousePool.Enqueue(value);
+        }
+    }
+
     
     // Start is called before the first frame update
     void Start()

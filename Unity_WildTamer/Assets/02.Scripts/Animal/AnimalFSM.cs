@@ -49,21 +49,21 @@ public class AnimalFSM : MonoBehaviour
 
     private void Default()
     {
-        throw new NotImplementedException();
+        curTime = 0.0f;
     }
 
     private void Run()
     {
-        throw new NotImplementedException();
+
     }
 
     private void Attack()
     {
-        throw new NotImplementedException();
+
     }
 
     private void Down()
     {
-        throw new NotImplementedException();
+
     }
 }

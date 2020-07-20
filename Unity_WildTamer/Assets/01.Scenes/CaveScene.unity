@@ -302,6 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aee0398fa522a448ba568eb6b75f8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxAnimal: 10
   mouseFactory: {fileID: 3653904624708593887, guid: fede7cbfc0bda04498f2aeb6b2b2b763,
     type: 3}
 --- !u!4 &1422138037
@@ -352,6 +353,7 @@ MonoBehaviour:
   wild: []
   itemIndex: 
   position: {x: 0, y: 0}
+  isCam: 0
 --- !u!4 &1476190632
 Transform:
   m_ObjectHideFlags: 0

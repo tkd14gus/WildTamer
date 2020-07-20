@@ -22,12 +22,16 @@ public class SceneLoad : MonoBehaviour
             {
                 //이동하면서 위치 조정
                 PlayerInfoManager.Instans.position = new Vector2(0, -0.5f);
+                //캠이 움직이도록
+                PlayerInfoManager.Instans.isCam = true;
                 SceneManager.LoadScene("FieldScene");
             }
             else
             {
                 //이동하면서 위치 조정
                 PlayerInfoManager.Instans.position = new Vector2(0, 3.5f);
+                //플레이어가 움직이도록
+                PlayerInfoManager.Instans.isCam = false;
                 SceneManager.LoadScene("CaveScene");
             }
         }

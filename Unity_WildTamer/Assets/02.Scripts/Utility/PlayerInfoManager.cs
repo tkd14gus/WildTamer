@@ -17,6 +17,9 @@ public class PlayerInfoManager : MonoBehaviour
     //플레이어의 위치
     public Vector2 position = Vector2.zero;
 
+    //현재 Scene이 캐릭터가 움직여야 하는지 아니면 카메라가 움직여야 하는지
+    public bool isCam = false;
+
     private void Awake()
     {
         if (Instans == null)

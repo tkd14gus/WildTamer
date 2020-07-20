@@ -27,12 +27,23 @@ public class PlayerFSM : MonoBehaviour
     //장비 게임 오브젝트
     private GameObject[] Item;
 
+    //카메라가 움직여야 하는지, 플레이어가 움직여야 하는지
+    private bool isCam;
+
+    private Transform[] moveCam;
+
+    //갈 수 있는지 확인하기 위해
+    private GameObject Ground;
+
     // Start is called before the first frame update
     void Start()
     {
         //애니메이터 컴포넌트
         anim = transform.GetChild(0).GetComponent<Animator>();
         armAnim = transform.GetChild(1).GetComponent<Animator>();
+
+        //그라운드 컴포넌트
+        Ground = GameObject.Find("Ground");
 
         //PlayerInfoManager로부터 위치를 받아준다.
         transform.position = PlayerInfoManager.Instans.position;
@@ -50,6 +61,21 @@ public class PlayerFSM : MonoBehaviour
                 Item[i].transform.GetChild(PlayerInfoManager.Instans.itemIndex[i]).gameObject.SetActive(true);
             }
         }
+
+        isCam = PlayerInfoManager.Instans.isCam;
+        //카메라가 움직여야 한다면 카메라를 받아와준다.
+        if(isCam)
+        {
+            componentCam();
+        }
+    }
+
+    private void componentCam()
+    {
+        moveCam = new Transform[2];
+
+        moveCam[0] = Camera.main.transform;
+        moveCam[1] = GameObject.Find("UICamera").GetComponent<Camera>().transform;
     }
 
     // Update is called once per frame
@@ -99,14 +125,41 @@ public class PlayerFSM : MonoBehaviour
 
     private void Run()
     {
+        //플레이어 발
+        Vector2 bottom = transform.position;
+        bottom.y -= 1;
+
+        //왼쪽으로 갈 때
+        if(Input.GetAxis("Horizontal") < 0)
+        {
+            //왼쪽으로 0.5떨어진 곳
+            Vector2 temp = bottom;
+            temp.x -= 0.5f;
+            //그곳에 정보를 Gound가 없다면
+            if (Physics2D.OverlapCircle(temp, 0.1f) != Ground)
+                return;
+        }
+
         //현재 위치에서 조이스틱이 움직인 만큼 이동해 준다.(캐스팅)
-        Vector2 move = transform.position;
+        Vector2 move = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * Time.deltaTime;
 
-        move += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * Time.deltaTime;
+        Vector2 casting = transform.position;
 
-        transform.position = move;
+        casting += move;
 
-        
+        transform.position = casting;
+
+        //카메라가 움직여야 한다면
+        if (isCam)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                Vector3 camCasting = moveCam[i].position;
+                camCasting.x += move.x;
+                camCasting.y += move.y;
+                moveCam[i].position = camCasting;
+            }
+        }
 
     }
 
