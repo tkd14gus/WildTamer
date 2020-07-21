@@ -12,15 +12,8 @@ public class SelectMoveTarget : MonoBehaviour
     void Start()
     {
         sm = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
-        Debug.Log(sm.name);
     }
-
-    // Update is called once per frame
-    //void Update()
-    //{
-    //
-    //}
-
+    
     public void ChangeTarget()
     {
         //Start보다 이 함수가 먼저 실행될 수 있음
@@ -41,6 +34,15 @@ public class SelectMoveTarget : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).GetComponent<AnimalFSM>().TargetPoint = target;
+        }
+    }
+
+    public void SendPlayerTarget(Transform Player)
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            print(i);
+            transform.GetChild(i).GetComponent<AnimalFSM>().PlayerPoint = Player;
         }
     }
 }

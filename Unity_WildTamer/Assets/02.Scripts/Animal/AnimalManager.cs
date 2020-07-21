@@ -37,7 +37,8 @@ public class AnimalManager : MonoBehaviour
             //mousePool을 내보내기
             if(mousePool.Count != 0)
             {
-                return mousePool.Dequeue();
+                GameObject mouse = mousePool.Dequeue();
+                return mouse;
             }
             else
             {
@@ -77,6 +78,8 @@ public class AnimalManager : MonoBehaviour
             mouse.transform.parent = poolAnimal[0];
             //비활성화
             mouse.SetActive(false);
+
+            mousePool.Enqueue(mouse);
         }
     }
 

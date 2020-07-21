@@ -52,6 +52,7 @@ public class SpawnManager : MonoBehaviour
             {
                 //AnimalManager에게서 mouse를 받는다.
                 GameObject mouse = AnimalManager.Instans.MousePool;
+
                 //활성화
                 mouse.SetActive(true);
 
@@ -64,19 +65,27 @@ public class SpawnManager : MonoBehaviour
                 //중앙에 0번 양 옆에 1, 2애니멀이 세워지도록 배치
                 Vector2 pos = new Vector2(groupOb.transform.position.x + xOffset, groupOb.transform.position.y);
                 mouse.transform.position = pos;
+
                 //새로 만들어질 때 타겟을 본인으로 해준다.
                 //mouse.GetComponent<AnimalFSM>().TargetPoint = mouse.transform;
                 //그룹으로 묶어준다.
                 mouse.transform.parent = groupOb.transform;
 
-                //그리고 부모의 스크립트 컴포넌트 및 새로운 타겟 찾기
-                mouse.GetComponent<AnimalFSM>().FirstTagetCheck();
-
+                //그룹에 SelecMoveTarget을 컴포넌트 해준다
+                mouse.GetComponent<AnimalFSM>().Setsmt();
+                
                 //0번째 애니멀은 잡을 수 있다.
                 if (j == 0)
                 {
                     mouse.GetComponent<AnimalUI>().enabled = true;
                 }
+                //2번째 애니멀일때 다음 이동 위치를 잡아준ㄴ다.
+                else if(j == 2)
+                {
+                    //그리고 부모의 스크립트 컴포넌트 및 새로운 타겟 찾기
+                    mouse.GetComponent<AnimalFSM>().FirstTagetCheck();
+                }
+                
             }
         }
     }

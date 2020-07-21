@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4472771644913191623}
   - component: {fileID: 4472771644913191624}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: weapon_mam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4472771645039485551}
   - component: {fileID: 4472771645039485552}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: weapon_bug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4472771645495472350}
   - component: {fileID: 4472771645495472349}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: arm_bug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 4472771645626787713}
   - component: {fileID: 4472771645626787712}
   - component: {fileID: 4472771645626787714}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +358,9 @@ GameObject:
   - component: {fileID: 4472771645823537606}
   - component: {fileID: 4472771645823537605}
   - component: {fileID: 4472771645823537607}
-  m_Layer: 0
+  - component: {fileID: 1968243634946958104}
+  - component: {fileID: 2409836791894034997}
+  m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -410,6 +412,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb8e30ecd8bb4fe46800fc92653196de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1968243634946958104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4472771645823537604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4123c31410db804a96818ff60171892, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!70 &2409836791894034997
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4472771645823537604}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.1, y: 0}
+  m_Size: {x: 0.7, y: 1.5}
+  m_Direction: 0
 --- !u!1 &4472771645945273591
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +450,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4472771645945273593}
   - component: {fileID: 4472771645945273592}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: arm_mam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -501,7 +531,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4472771645947357949}
   - component: {fileID: 4472771645947357948}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: acc_mam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -583,7 +613,7 @@ GameObject:
   - component: {fileID: 4472771646117775192}
   - component: {fileID: 4472771646117775191}
   - component: {fileID: 4472771646117775193}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: body_stand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -683,7 +713,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4472771646425961638}
   - component: {fileID: 4472771646425961639}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: weapon_rep
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -764,7 +794,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4472771646649938515}
   - component: {fileID: 4472771646649938514}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: acc_rep
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -845,7 +875,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4472771646758452911}
   - component: {fileID: 4472771646758452910}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: acc_bug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -925,7 +955,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6559856976417248862}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -957,7 +987,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6209790500348546604}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: acc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
