@@ -21,7 +21,19 @@ public class AnimalFSM : MonoBehaviour
     public int HP
     {
         get { return hp; }
-        set { hp = value; }
+        set
+        {
+            hp = value;
+            //완전 치료라면 처음 상태인 디폴트로 해준다.
+            if (value == 100)
+                anis = AnimalState.Default;
+
+            //만일 hp가 0이하로 떨어진다면
+            if(hp <= 0)
+            {
+                anis = AnimalState.Down;
+            }
+        }
     }
     public float speed = 1.5f;
     public float attackTime = 1.5f;
@@ -48,8 +60,11 @@ public class AnimalFSM : MonoBehaviour
         set
         {
             playerPoint = value;
-            print(playerPoint.name);
-            anis = AnimalState.Attack;
+
+            if (playerPoint != null)
+                anis = AnimalState.Attack;
+            else
+                anis = AnimalState.Default;
         }
     }
 
@@ -72,38 +87,44 @@ public class AnimalFSM : MonoBehaviour
         {
             case AnimalState.Default:
                 Default();
+                //근처에 플레이어 있는지 체크
+                PlayerCheck();
                 break;
             case AnimalState.Run:
                 Run();
+                //근처에 플레이어 있는지 체크
+                PlayerCheck();
                 break;
             case AnimalState.Attack:
                 Attack();
+                //플레이어가 멀리 떨어졌는지 체크
+                PlayerUncheck();
                 break;
             case AnimalState.Down:
                 Down();
                 break;
         }
 
-        //매번 근처에 플레이어 있는지 체크
-        PlayerCheck();
+        
     }
 
     private void PlayerCheck()
     {
         //주변에 플레이어가 있는지 확인
         Collider2D[] player = Physics2D.OverlapCircleAll(transform.position, colRadius * 3, 1 << 9);
-        
+        //만약 있다면
         if (player.Length != 0)
         {
             //있다면 그룹에게 보내 모든 자식들이 공격할 수 있도록 해준다.
             smt.SendPlayerTarget(player[0].transform);
         }
-        else
+    }
+
+    private void PlayerUncheck()
+    {
+        //대상을 찾는 범위보다 조금 더 넓은 범위보다 멀리 떨어졌다면
+        if(Vector2.Distance(playerPoint.position, transform.position) > colRadius * 12)
         {
-            //만일 없을 때 플에이어도 없다면 나가준다.
-            if (playerPoint == null)
-                return;
-            //플레이어가 있다면 널로 바꿔준다.
             smt.SendPlayerTarget(null);
         }
     }
@@ -224,7 +245,7 @@ public class AnimalFSM : MonoBehaviour
 
     private void Attack()
     {
-        if(Vector2.Distance(transform.position, playerPoint.position) > colRadius * 2)
+        if(Vector2.Distance(transform.position, playerPoint.position) > colRadius * 4)
         {
             anim.SetTrigger("Run");
 
@@ -251,14 +272,26 @@ public class AnimalFSM : MonoBehaviour
             if(curTime >= attackTime)
             {
                 //공격해준다.
-                targetPoint.GetComponent<Damaged>().DoDamaged(attackPower);
+                playerPoint.GetComponent<Damaged>().DoDamaged(attackPower, transform);
+
+                curTime = 0.0f;
             }
         }
     }
 
     private void Down()
     {
+        anim.SetTrigger("Down");
+        //켜져있다면
+        if(GetComponent<AnimalUI>().enabled)
+        {
+            GetComponent<AnimalUI>().DeadUI();
+        }
+        //꺼져있다면
+        else
+        {
 
+        }
     }
 
     public void FirstTagetCheck()
@@ -283,5 +316,13 @@ public class AnimalFSM : MonoBehaviour
         vt += dis;
 
         transform.position = vt;
+    }
+
+    //맞았을 때 target옮기기
+    public void SetTarget(Transform ta)
+    {
+        //그냥 있거나 움직일때만
+        if (anis == AnimalState.Default || anis == AnimalState.Run)
+            playerPoint = ta;
     }
 }

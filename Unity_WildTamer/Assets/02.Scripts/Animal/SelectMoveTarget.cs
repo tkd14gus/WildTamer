@@ -41,7 +41,6 @@ public class SelectMoveTarget : MonoBehaviour
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-            print(i);
             transform.GetChild(i).GetComponent<AnimalFSM>().PlayerPoint = Player;
         }
     }

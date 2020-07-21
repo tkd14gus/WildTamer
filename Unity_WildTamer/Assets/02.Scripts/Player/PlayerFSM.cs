@@ -15,11 +15,13 @@ public class PlayerFSM : MonoBehaviour
     PlayerState ps = PlayerState.Stand;
 
     //이동 속도
-    [SerializeField] float speed = 1.0f;
+    [SerializeField] float speed = 2.5f;
     //공격 속도
     [SerializeField] float attackTime = 1.0f;
     //현재 공격 시간
     [SerializeField] float curTime = 0.0f;
+    //공격력
+    [SerializeField] int power = 30;
 
     private Animator anim;
     private Animator armAnim;
@@ -34,6 +36,9 @@ public class PlayerFSM : MonoBehaviour
 
     //갈 수 있는지 확인하기 위해
     private GameObject Ground;
+
+    //적의 위치
+    private Transform animalPoint;
 
     // Start is called before the first frame update
     void Start()
@@ -94,9 +99,12 @@ public class PlayerFSM : MonoBehaviour
         //만일 움직이지 않는다면(나중에 Attack관련해서 수정이 요구됨)
         else
         {
-            ps = PlayerState.Stand;
-            anim.SetTrigger("Stand");
-            armAnim.SetTrigger("Stand");
+            if (ps != PlayerState.Attack)
+            {
+                ps = PlayerState.Stand;
+                anim.SetTrigger("Stand");
+                armAnim.SetTrigger("Stand");
+            }
         }
 
         //상태에 따른 함수 호출
@@ -121,6 +129,33 @@ public class PlayerFSM : MonoBehaviour
     {
         //스텐드 상태면 curTime을 무조건 0으로 바꿔준다.
         curTime = 0.0f;
+        //Stand상태에서만 적을 찾는다
+        FindEnemy();
+    }
+
+    private void FindEnemy()
+    {
+        //1 << 8이 에너미
+        Collider2D[] enemys = Physics2D.OverlapCircleAll(transform.position, 2.0f, 1 << 8);
+
+        if(enemys.Length != 0)
+        {
+            for (int i = 0; i < enemys.Length; i++)
+            {
+                if (enemys[i].transform.GetComponent<AnimalFSM>().HP <= 0) continue;
+                
+                print(enemys[i].transform.name);
+                animalPoint = enemys[i].transform;
+                ps = PlayerState.Attack;
+                return;
+            }
+            //리턴을 겪지않고 나왔다는 것은 적이 모두 죽었다는 의미
+            ps = PlayerState.Stand;
+        }
+        else
+        {
+            ps = PlayerState.Stand;
+        }
     }
 
     private void Run()
@@ -136,7 +171,7 @@ public class PlayerFSM : MonoBehaviour
             V = 0;
 
         //현재 위치에서 조이스틱이 움직인 만큼 이동해 준다.(캐스팅)
-        Vector2 move = new Vector2(H, V) * Time.deltaTime;
+        Vector2 move = new Vector2(H, V) * speed * Time.deltaTime;
 
         Vector2 casting = transform.position;
 
@@ -254,7 +289,38 @@ public class PlayerFSM : MonoBehaviour
 
     private void Attack()
     {
-        throw new NotImplementedException();
+        print("ps : " + ps);
+        //체력이 0보다 작으면
+        if(animalPoint.GetComponent<AnimalFSM>().HP <= 0)
+        {
+            //대상을 다시 찾고
+            FindEnemy();
+            //나간다.
+            return;
+        }
+
+        //애니메이션을 실행
+        //anim.SetTrigger("Attack");
+
+        //거리가 맞으면
+        if(Vector2.Distance(animalPoint.position, transform.position) <= 2.5f)
+        {
+            //시간을 추가해주고
+            curTime += Time.deltaTime;
+            //공격한다.
+            if(curTime >= attackTime)
+            {
+                animalPoint.GetComponent<Damaged>().DoDamaged(power, transform);
+                curTime = 0.0f;
+            }
+        }
+        //거리가 멀면
+        else
+        {
+            curTime = 0.0f;
+            //일반상태로 바꿔준다.
+            ps = PlayerState.Stand;
+        }
     }
 
     private void Dead()

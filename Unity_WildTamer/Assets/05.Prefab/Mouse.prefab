@@ -168,7 +168,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WellPrefab: {fileID: 482356242351130028, guid: 3613eb7d20ab23742918b8a6ee7b1623,
     type: 3}
+  ItemPrefab: {fileID: 8115661817784586875, guid: db16e8d68a2136a43a818cc4c5cb520e,
+    type: 3}
+  TamingPrefab: {fileID: 685845491944325785, guid: b6a463b00ba36d048846e2aa90d3b771,
+    type: 3}
   wellOffset: {x: 0, y: 1.5}
+  ItemOffset: {x: 1, y: -1}
+  TamingOffset: {x: -1, y: -1}
 --- !u!58 &2515597722955259012
 CircleCollider2D:
   m_ObjectHideFlags: 0

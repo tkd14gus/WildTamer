@@ -23,16 +23,20 @@ public class Damaged : MonoBehaviour
     }
 
     //데미지를 주는 함수
-    public void DoDamaged(int damage)
+    public void DoDamaged(int damage, Transform ta)
     {
         if(isPlayer)
         {
             PlayerInfoManager.Instans.hp -= damage;
-            print(PlayerInfoManager.Instans.hp);
+            //print(PlayerInfoManager.Instans.hp);
         }
         else
         {
+            //피를 깎아주고
             afsm.HP -= damage;
+            print(afsm.HP);
+            //대상을 옮겨준다.
+            gameObject.GetComponent<AnimalFSM>().SetTarget(ta);
         }
     }
 

@@ -9,7 +9,7 @@ public class WellImage : MonoBehaviour
     private RectTransform rectParent;
     private RectTransform rectWell;
 
-    //얼마큼 떨어틀일 것인가
+    //얼마큼 떨어트릴 것인가
     [HideInInspector] public Vector2 offset = Vector2.zero;
     [HideInInspector] public Transform targetTr;
 
