@@ -5,11 +5,10 @@ using UnityEngine;
 public class ButtonManager : MonoBehaviour
 {
 
-    
-    public void OnClickTaming()
+    public void OnClickTaming(Transform tr)
     {
         //체력 원상복구 시켜주고
-        transform.GetComponent<AnimalFSM>().HP = 100;
+        transform.GetComponent<WellImage>().targetTr.GetComponent<AnimalFSM>().HP = 100;
         //레이어를 플레이어로 바꿔준 다음
         gameObject.layer = 1 << 9;
         //플레이어 와일드 리스트에 넣어준다.

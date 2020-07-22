@@ -34,7 +34,6 @@ public class Damaged : MonoBehaviour
         {
             //피를 깎아주고
             afsm.HP -= damage;
-            print(afsm.HP);
             //대상을 옮겨준다.
             gameObject.GetComponent<AnimalFSM>().SetTarget(ta);
         }

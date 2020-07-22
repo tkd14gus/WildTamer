@@ -33,11 +33,11 @@ public class PlayerInfoManager : MonoBehaviour
             itemIndex[2] = -1;
 
             Instans = this;
-            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 

@@ -13,7 +13,15 @@ public class SelectMoveTarget : MonoBehaviour
     {
         sm = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
     }
-    
+
+    void Update()
+    {
+        //만일 자식들이 모두 없다면 디스트로이
+        //시간이 부족해서 오브젝트 풀링으로 수정X
+        if (transform.childCount == 0)
+            Destroy(this);
+    }
+
     public void ChangeTarget()
     {
         //Start보다 이 함수가 먼저 실행될 수 있음
@@ -33,7 +41,7 @@ public class SelectMoveTarget : MonoBehaviour
         //타겟을 정했다면 모든 자식들에게 타겟을 전해준다.
         for (int i = 0; i < transform.childCount; i++)
         {
-            transform.GetChild(i).GetComponent<AnimalFSM>().TargetPoint = target;
+            transform.GetChild(i).GetComponent<AnimalFSM>().TargetPoint = target.position;
         }
     }
 

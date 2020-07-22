@@ -52,11 +52,20 @@ public class AnimalUI : MonoBehaviour
         _Item.transform.GetComponent<Image>().enabled = false;
         _Item.transform.GetComponent<Button>().interactable = false;
 
+        //item버튼 동적 할당
+        Button item = _Item.transform.GetComponent<Button>();
+        item.onClick.AddListener(() => { OnClickItme(transform); });
+
+
         _Taming = Taming.GetComponent<WellImage>();
         _Taming.targetTr = transform;
         _Taming.offset = TamingOffset;
         _Taming.transform.GetComponent<Image>().enabled = false;
         _Taming.transform.GetComponent<Button>().interactable = false;
+
+        //Taming버튼 동적 할당
+        Button taming = _Taming.transform.GetComponent<Button>();
+        taming.onClick.AddListener(() => { OnClickTaming(transform); });
     }
 
     public void DeadUI()
@@ -68,5 +77,57 @@ public class AnimalUI : MonoBehaviour
 
         _Taming.transform.GetComponent<Image>().enabled = true;
         _Taming.transform.GetComponent<Button>().interactable = true;
+    }
+
+    public void OnClickTaming(Transform ta)
+    {
+        //버튼을 눌렀다면 전부 꺼준다.
+        _well.gameObject.SetActive(false);
+
+        _Item.transform.GetComponent<Image>().enabled = false;
+        _Item.transform.GetComponent<Button>().interactable = false;
+
+        _Taming.transform.GetComponent<Image>().enabled = false;
+        _Taming.transform.GetComponent<Button>().interactable = false;
+
+        //체력 원상복구 시켜주고
+        GetComponent<AnimalFSM>().HP = 100;
+        //테이밍 됐다고 알려주고 시켜주고
+        GetComponent<AnimalFSM>().IsTaming = true;
+        //레이어를 플레이어로 바꿔준 다음
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Player");
+
+        //플레이어 와일드 리스트에 넣어준다.
+        PlayerInfoManager.Instans.wild.Add(gameObject);
+
+        //부모를 바꿔준다.
+        transform.parent = null;
+        transform.parent = GameObject.Find("PlayerGroup").transform;
+        //마지막으로 AnimalUI를 꺼준다.
+        GetComponent<AnimalUI>().enabled = false;
+
+
+    }
+
+    public void OnClickItme(Transform ta)
+    {
+        //버튼을 눌렀다면 전부 꺼준다.
+        _well.gameObject.SetActive(false);
+
+        _Item.transform.GetComponent<Image>().enabled = false;
+        _Item.transform.GetComponent<Button>().interactable = false;
+
+        _Taming.transform.GetComponent<Image>().enabled = false;
+        _Taming.transform.GetComponent<Button>().interactable = false;
+
+        //체력 원상복구 시켜주고
+        GetComponent<AnimalFSM>().HP = 100;
+        //레이어를 에너미로 바꿔준 다음
+        gameObject.layer = LayerMask.NameToLayer("Enemy");
+        //그리고 나서 돌려준다.
+        AnimalManager.Instans.MousePool = gameObject;
+        //UI꺼준다.
+        GetComponent<AnimalUI>().enabled = false;
     }
 }

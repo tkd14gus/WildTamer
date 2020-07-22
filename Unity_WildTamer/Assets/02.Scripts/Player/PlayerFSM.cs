@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -89,7 +88,7 @@ public class PlayerFSM : MonoBehaviour
         //조금이라도 움직인다면 상태를 Run으로 바꿔준다.
         if(Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            if (ps == PlayerState.Stand)
+            if (ps != PlayerState.Dead)
             {
                 ps = PlayerState.Run;
             }
@@ -136,7 +135,7 @@ public class PlayerFSM : MonoBehaviour
     private void FindEnemy()
     {
         //1 << 8이 에너미
-        Collider2D[] enemys = Physics2D.OverlapCircleAll(transform.position, 2.0f, 1 << 8);
+        Collider2D[] enemys = Physics2D.OverlapCircleAll(transform.position, 3.0f, 1 << 8);
 
         if(enemys.Length != 0)
         {
@@ -144,7 +143,6 @@ public class PlayerFSM : MonoBehaviour
             {
                 if (enemys[i].transform.GetComponent<AnimalFSM>().HP <= 0) continue;
                 
-                print(enemys[i].transform.name);
                 animalPoint = enemys[i].transform;
                 ps = PlayerState.Attack;
                 return;
@@ -178,6 +176,24 @@ public class PlayerFSM : MonoBehaviour
         casting += move;
 
         transform.position = casting;
+
+        //player그룹의 전체에게 이동하라고 보내준다.
+        //0은 자기 자신
+        for (int i = 1; i < transform.parent.childCount; i++)
+        {
+            float x = Random.Range(0, 2.0f);
+            float y = Random.Range(0, 2.0f);
+            float angle = Random.Range(0.0f, Mathf.PI * 2);
+            
+            casting = transform.position;
+
+            //플레이어를 중심으로 2의 반지름 안에 임의의 자리에 가도록 해준다.
+            Vector2 sendPos = new Vector2(Mathf.Cos(angle) * x, Mathf.Sin(angle) * y);
+
+            casting += sendPos;
+
+            transform.parent.GetChild(i).GetComponent<AnimalFSM>().TargetPoint = casting;
+        }
 
         //카메라가 움직여야 한다면
         if (isCam)
@@ -289,7 +305,6 @@ public class PlayerFSM : MonoBehaviour
 
     private void Attack()
     {
-        print("ps : " + ps);
         //체력이 0보다 작으면
         if(animalPoint.GetComponent<AnimalFSM>().HP <= 0)
         {
@@ -325,7 +340,7 @@ public class PlayerFSM : MonoBehaviour
 
     private void Dead()
     {
-        throw new NotImplementedException();
+
     }
 
     

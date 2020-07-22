@@ -26,6 +26,13 @@ public class SpawnManager : MonoBehaviour
         MagaSpawn();
     }
 
+    void Update()
+    {
+        //만일 3개보다 더 많다면(죽었다면) 추가해준다.
+        if (AnimalManager.Instans.MouseCount >= 3)
+            MagaSpawn();
+    }
+
     private void ComponentPoint()
     {
         //동적할당
@@ -40,7 +47,7 @@ public class SpawnManager : MonoBehaviour
     private void MagaSpawn()
     {
         //총 몇개의 동물이 생성되었는지
-        int groupNum = AnimalManager.Instans.maxAnimal;
+        int groupNum = AnimalManager.Instans.MouseCount;
 
         //3마리가 하나의 짝이므로 그룹은 3으로 나눈 값이다.
         for (int i = 0; i < groupNum / 3; i++)
