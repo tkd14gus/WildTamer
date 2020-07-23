@@ -55,6 +55,7 @@ public class AnimalUI : MonoBehaviour
         //item버튼 동적 할당
         Button item = _Item.transform.GetComponent<Button>();
         item.onClick.AddListener(() => { OnClickItme(transform); });
+        
 
 
         _Taming = Taming.GetComponent<WellImage>();

@@ -14,7 +14,7 @@ public class PlayerFSM : MonoBehaviour
     PlayerState ps = PlayerState.Stand;
 
     //이동 속도
-    [SerializeField] float speed = 2.5f;
+    //[SerializeField] float speed = 2.5f;
     //공격 속도
     [SerializeField] float attackTime = 1.0f;
     //현재 공격 시간
@@ -38,6 +38,19 @@ public class PlayerFSM : MonoBehaviour
 
     //적의 위치
     private Transform animalPoint;
+
+    private float x;
+    private float y;
+    public float X
+    {
+        get { return x; }
+        set { x = value; }
+    }
+    public float Y
+    {
+        get { return y; }
+        set { y = value; }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -86,7 +99,8 @@ public class PlayerFSM : MonoBehaviour
     void Update()
     {
         //조금이라도 움직인다면 상태를 Run으로 바꿔준다.
-        if(Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        //if(Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        if(x != 0 || y != 0)
         {
             if (ps != PlayerState.Dead)
             {
@@ -159,8 +173,8 @@ public class PlayerFSM : MonoBehaviour
     private void Run()
     {
         //상하좌우
-        float H = Input.GetAxis("Horizontal");
-        float V = Input.GetAxis("Vertical");
+        float H = x;
+        float V = y;
 
         //물을 만나면 그 방향 0으로
         if (!HorizontalCheck())
@@ -169,7 +183,7 @@ public class PlayerFSM : MonoBehaviour
             V = 0;
 
         //현재 위치에서 조이스틱이 움직인 만큼 이동해 준다.(캐스팅)
-        Vector2 move = new Vector2(H, V) * speed * Time.deltaTime;
+        Vector2 move = new Vector2(H, V) * Time.deltaTime;
 
         Vector2 casting = transform.position;
 
@@ -214,46 +228,47 @@ public class PlayerFSM : MonoBehaviour
         //플레이어 발
         Vector2 bottom = transform.position;
         bottom.y -= 1;
-
-
+        
+        
         //왼쪽으로 갈 때
-        if (Input.GetAxis("Vertical") < 0)
+        if (y < 0)
         {
             //아래쪽으로 0.5떨어진 곳
             Vector2 temp = bottom;
             temp.y -= 0.5f;
-
-
+        
+        
             for (int i = 0; i < Physics.OverlapSphere(temp, 0.1f).Length; i++)
             {
                 if (Physics.OverlapSphere(temp, 0.1f)[i].name.Contains("Ground"))
                     break;
-
+        
                 if (i == Physics.OverlapSphere(temp, 0.1f).Length - 1)
                     return false;
             }
-
+        
         }
         //오른쪽으로 갈 때
-        else if (Input.GetAxis("Vertical") > 0)
+        else if (y > 0)
         {
             //위쪽으로 0.5떨어진 곳
             Vector2 temp = bottom;
             temp.y += 0.5f;
-
-
+        
+        
             for (int i = 0; i < Physics.OverlapSphere(temp, 0.1f).Length; i++)
             {
                 if (Physics.OverlapSphere(temp, 0.1f)[i].name.Contains("Ground"))
                     break;
-
+        
                 if (i == Physics.OverlapSphere(temp, 0.1f).Length - 1)
                     return false;
             }
-
+        
         }
-
+        
         return true;
+
     }
 
     private bool HorizontalCheck()
@@ -264,7 +279,7 @@ public class PlayerFSM : MonoBehaviour
         
 
         //왼쪽으로 갈 때
-        if (Input.GetAxis("Horizontal") < 0)
+        if (x < 0)
         {
             //왼쪽으로 0.5떨어진 곳
             Vector2 temp = bottom;
@@ -282,7 +297,7 @@ public class PlayerFSM : MonoBehaviour
                 
         }
         //오른쪽으로 갈 때
-        else if(Input.GetAxis("Horizontal") > 0)
+        else if(x > 0)
         {
             //오른쪽으로 0.5떨어진 곳
             Vector2 temp = bottom;

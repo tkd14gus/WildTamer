@@ -8,12 +8,12 @@ public class PlayerRotation : MonoBehaviour
     void Update()
     {
         //오른쪽을 눌렀다면 오른쪽을 보게 한다.
-        if (Input.GetAxis("Horizontal") > 0)
+        if (GetComponent<PlayerFSM>().X > 0)
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
         }
         //왼쪽을 눌렀을 때
-        else if (Input.GetAxis("Horizontal") < 0)
+        else if (GetComponent<PlayerFSM>().X < 0)
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
